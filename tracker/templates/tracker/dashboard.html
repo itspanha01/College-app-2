@@ -1,0 +1,74 @@
+{% extends 'tracker/base.html' %}
+
+{% block content %}
+<h1 class="page-title">👋 Welcome back, {{ user.username }}!</h1>
+
+<!-- Stats Cards -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #1a73e8, #0d47a1);">
+            <h2 class="fw-bold">{{ total }}</h2>
+            <p class="mb-0 opacity-75">Total Applications</p>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+            <h2 class="fw-bold">{{ not_started }}</h2>
+            <p class="mb-0 opacity-75">Not Started</p>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #06b6d4, #0284c7);">
+            <h2 class="fw-bold">{{ in_progress }}</h2>
+            <p class="mb-0 opacity-75">In Progress</p>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="stat-card" style="background: linear-gradient(135deg, #10b981, #059669);">
+            <h2 class="fw-bold">{{ submitted }}</h2>
+            <p class="mb-0 opacity-75">Submitted</p>
+        </div>
+    </div>
+</div>
+
+<!-- Applications Table -->
+<div class="card shadow-sm">
+    <div class="card-body p-4">
+        <h4 class="fw-600 mb-3">📋 My Applications</h4>
+        {% if applications %}
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr style="background: #f8faff;">
+                    <th>College</th>
+                    <th>Deadline</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for app in applications %}
+                <tr>
+                    <td class="fw-500">{{ app.college.name }}</td>
+                    <td>{{ app.deadline }}</td>
+                    <td>
+                        {% if app.status == 'submitted' %}
+                        <span class="badge bg-success">✅ Submitted</span>
+                        {% elif app.status == 'in_progress' %}
+                        <span class="badge bg-info">⏳ In Progress</span>
+                        {% else %}
+                        <span class="badge bg-warning text-dark">🔲 Not Started</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="text-center py-5">
+            <h1>🎓</h1>
+            <p class="text-muted">No applications yet.</p>
+            <a href="{% url 'college_search' %}" class="btn btn-primary">Search Colleges</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
